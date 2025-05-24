@@ -58,12 +58,25 @@ def refresh():
                "authorization": f"Basic {base64str}"
                }
     response = requests.post(url, headers=headers, data=body)
-    with open("./.code", 'w') as file:
-        file.write(response.text)
-        
-    data = json.load(response.text)
+    data = json.loads(response.text)
+    
+    try:
+        data["refresh_token"]
+        with open("./.code", 'w') as file:
+            file.write(response.text)
+
+    except KeyError:
+        pass
+    
     auth_token = data["access_token"]
     return auth_token
 
 
+def get_top_tracks(token: str):
+    url = "https://api.spotify.com/v1/me/top/tracks?offset=00&time_range=short_term"
+    headers = {"authorization": f"Bearer {token}"}
+    response = requests.get(url, headers=headers)
+    print(response.text)
+    data = json.loads(response.text)
+    print(data["items"][0])
 
