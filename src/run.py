@@ -14,26 +14,26 @@ def generate_background(covers):
     wallpaper_width = 1920
     wallpaper_height = 1080
 
-    cover_size = 640
 
     wallpaper = Image.new('RGB', (wallpaper_width, wallpaper_height), color='black')
     cols = 5
     rows = 2
-
-    spacing_x = (wallpaper_width - cols * cover_size) // (cols + 1)
-    spacing_y = (wallpaper_height - rows * cover_size) // (rows + 1)
-
+    
+    size = wallpaper_width//cols
+    padding = (wallpaper_height - (size * 2)) // 2
+    
+    
+    #156 pixels of padding on top and bottom
     for i, img in enumerate(images):
-        img = img.resize((cover_size, cover_size))
+        img = img.resize((size, size))
 
         col = i % cols
-        row = i // cols
+        row = i % rows
 
-        x = spacing_x + col * (cover_size + spacing_x)
-        y = spacing_y + row * (cover_size + spacing_y)
+        y_pos = padding + (size * row)
+        x_pos = size * col
 
-        wallpaper.paste(img, (x, y))
-
+        wallpaper.paste(img, (x_pos, y_pos))
     wallpaper.save('generated_wallpaper.jpg')
 
 
