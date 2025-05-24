@@ -76,7 +76,6 @@ def get_top_tracks(token: str):
     url = "https://api.spotify.com/v1/me/top/tracks?offset=00&time_range=short_term"
     headers = {"authorization": f"Bearer {token}"}
     response = requests.get(url, headers=headers)
-    print(response.text)
     data = json.loads(response.text)
-    print(data["items"][0])
+    return data
 
